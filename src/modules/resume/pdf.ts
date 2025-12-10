@@ -44,9 +44,10 @@ export async function renderResumePdf(resume: ResumeInput): Promise<Buffer> {
   }
 
   // Experience
-  if (resume.experience?.length) {
+  const experiences = resume.experience ?? [];
+  if (experiences.length) {
     sectionTitle(doc, "EXPERIENCE", sizing.title);
-    resume.experience.forEach((exp, idx) => {
+    experiences.forEach((exp, idx) => {
       doc.font("Helvetica-Bold").fontSize(sizing.body).text(`${exp.position ?? ""} - ${exp.company ?? ""} (${exp.location ?? ""})`, { width: textWidth });
       doc.font("Helvetica").fontSize(sizing.body).text(exp.period ?? "", { width: textWidth });
       if (exp.achievements?.length) {
@@ -54,7 +55,7 @@ export async function renderResumePdf(resume: ResumeInput): Promise<Buffer> {
           doc.text(`- ${ach}`, { lineGap: 1.1, width: textWidth });
         });
       }
-      if (idx < resume.experience.length - 1) {
+      if (idx < experiences.length - 1) {
         doc.moveDown(0.7);
       }
     });
@@ -174,9 +175,10 @@ function estimateHeight(resume: ResumeInput, sizing: { header: number; subHeader
   }
 
   // Experience
-  if (resume.experience?.length) {
+  const experiences = resume.experience ?? [];
+  if (experiences.length) {
     h += lineHeightBold("EXPERIENCE", sizing.title);
-    resume.experience.forEach((exp, idx) => {
+    experiences.forEach((exp, idx) => {
       h += lineHeightBold(`${exp.position ?? ""} - ${exp.company ?? ""} (${exp.location ?? ""})`, sizing.body);
       h += lineHeight(exp.period, sizing.body);
       if (exp.achievements?.length) {
@@ -184,7 +186,7 @@ function estimateHeight(resume: ResumeInput, sizing: { header: number; subHeader
           h += lineHeight(`- ${ach}`, sizing.body, 1.1);
         });
       }
-      if (idx < resume.experience.length - 1) {
+      if (idx < experiences.length - 1) {
         h += gap(0.7, sizing.body);
       }
     });

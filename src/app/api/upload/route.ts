@@ -5,7 +5,7 @@ import { storeBufferLocally } from "@/modules/storage/blob";
 
 export const runtime = "nodejs";
 
-const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB para placeholder
+const MAX_SIZE_BYTES = 5 * 1024 * 1024;
 
 export async function POST(req: Request) {
   try {

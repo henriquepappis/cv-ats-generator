@@ -2,9 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   typedRoutes: true,
-  experimental: {
-    serverComponentsExternalPackages: ["pdfkit"]
-  }
+  serverExternalPackages: ["pdfkit"]
 };
 
 export default nextConfig;

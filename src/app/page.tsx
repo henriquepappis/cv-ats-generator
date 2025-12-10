@@ -46,6 +46,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [previewLoading, setPreviewLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const parseJson = () => {
     let parsed: unknown;
@@ -66,21 +67,6 @@ export default function Home() {
       throw new Error(data.error ?? `Erro ${res.status}`);
     }
     return res.blob();
-  };
-
-  const fetchPreviewHtml = async (): Promise<string> => {
-    const parsed = parseJson();
-    const res = await fetch("/api/render", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ resume: parsed })
-    });
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}));
-      throw new Error(data.error ?? `Erro ${res.status}`);
-    }
-    const json = await res.json();
-    return json.html as string;
   };
 
   const handleDownload = async () => {
@@ -148,24 +134,39 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // Gera preview inicial com sample
     handlePreview().catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } finally {
+      setLoggingOut(false);
+      window.location.href = "/login";
+    }
+  };
 
   return (
     <main className="layout">
       <div className="panel">
         <header>
-          <p style={{ fontSize: 14, letterSpacing: 0.6, color: "#64748b", margin: 0 }}>
-            CV ATS Generator
-          </p>
-          <h1 style={{ margin: "6px 0 8px", fontSize: 26, lineHeight: 1.2 }}>
-            Cole seu JSON e baixe o PDF
-          </h1>
-          <p style={{ margin: 0, color: "#475569" }}>
-            O template segue o modelo em texto simples. Edite o JSON e clique em gerar.
-          </p>
+          <div className="header-top">
+            <div>
+              <p style={{ fontSize: 14, letterSpacing: 0.6, color: "#64748b", margin: 0 }}>
+                CV ATS Generator
+              </p>
+              <h1 style={{ margin: "6px 0 8px", fontSize: 26, lineHeight: 1.2 }}>
+                Cole seu JSON e baixe o PDF
+              </h1>
+              <p style={{ margin: 0, color: "#475569" }}>
+                O template segue o modelo em texto simples. Edite o JSON e clique em gerar.
+              </p>
+            </div>
+            <button className="logout" onClick={handleLogout} disabled={loggingOut}>
+              {loggingOut ? "Saindo..." : "Sair"}
+            </button>
+          </div>
         </header>
 
         <label style={{ fontWeight: 600, color: "#0f172a" }}>
@@ -368,6 +369,25 @@ export default function Home() {
           display: flex;
           gap: 10px;
           flex-wrap: wrap;
+        }
+        .header-top {
+          display: flex;
+          justify-content: space-between;
+          gap: 12px;
+          align-items: flex-start;
+        }
+        .logout {
+          padding: 10px 12px;
+          border: 1px solid #0f172a;
+          border-radius: 10px;
+          background: #fff;
+          color: #0f172a;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .logout[disabled] {
+          cursor: not-allowed;
+          opacity: 0.7;
         }
         iframe {
           height: 650px;

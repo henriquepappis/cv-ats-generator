@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const { resume } = BodySchema.parse(body);
     const pdfBuffer = await renderResumePdf(resume);
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(pdfBuffer as unknown as BodyInit, {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",

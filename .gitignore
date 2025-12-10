@@ -8,3 +8,13 @@ node_modules
 coverage
 dist
 *.log
+.DS_Store
+postgres_data
+*.sqlite
+.turbo
+docker-compose.override.yml
+*.lockdb
+.npmrc
+.pnpm-debug.log
+.yarn-debug.log
+.yarn-error.log
