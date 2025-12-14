@@ -1,0 +1,23 @@
+services:
+  app:
+    image: ghcr.io/henriquepappis/cv-ats-generator:latest
+    container_name: cv-ats-generator
+    restart: unless-stopped
+    env_file:
+      - .env
+    networks:
+      - proxy
+      - db
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.cvats.rule=Host(⁠ cv.henriquepappis.com ⁠)
+      - traefik.http.routers.cvats.entrypoints=websecure
+      - traefik.http.routers.cvats.tls=true
+      - traefik.http.routers.cvats.tls.certresolver=le
+      - traefik.http.services.cvats.loadbalancer.server.port=3000
+
+networks:
+  proxy:
+    external: true
+  db:
+    external: true
