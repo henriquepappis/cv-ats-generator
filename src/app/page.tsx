@@ -127,11 +127,11 @@ export default function Home() {
     }
   };
 
-  const handlePreview = async () => {
+  const handlePreview = async (resumeContent?: unknown) => {
     setPreviewLoading(true);
     setStatus(null);
     try {
-      const blob = await fetchPdf();
+      const blob = await fetchPdf(resumeContent);
       const url = URL.createObjectURL(blob);
       if (pdfUrl) URL.revokeObjectURL(pdfUrl);
       setPdfUrl(url);
@@ -198,11 +198,12 @@ export default function Home() {
   const handleLoadResume = (resume: ResumeItem) => {
     setResumeName(resume.name);
     setResumeCompany(resume.company ?? "");
+    const resumeContent = resume.content;
     if (resume.content) {
       setJsonText(JSON.stringify(resume.content, null, 2));
     }
     setStatus(`Currículo "${resume.name}" carregado.`);
-    handlePreview().catch(() => {});
+    handlePreview(resumeContent).catch(() => {});
   };
 
   const handleDeleteResume = async (id: number) => {
