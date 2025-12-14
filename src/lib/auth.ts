@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import { jwtVerify } from "jose";
 
 const ACCESS_TOKEN_TTL_SEC = 60 * 15; // 15 minutos
 const REFRESH_TOKEN_TTL_SEC = 60 * 60 * 24 * 30; // 30 dias
@@ -10,6 +11,15 @@ export function signAccessToken(payload: { sub: string | number; email: string }
   const secret = process.env.AUTH_SECRET;
   if (!secret) throw new Error("AUTH_SECRET não configurada");
   return jwt.sign({ ...payload, sub: String(payload.sub) }, secret, { expiresIn: ACCESS_TOKEN_TTL_SEC });
+}
+
+export async function verifyAccessToken(token: string) {
+  const secret = process.env.AUTH_SECRET;
+  if (!secret) throw new Error("AUTH_SECRET não configurada");
+  const encoder = new TextEncoder();
+  const key = encoder.encode(secret);
+  const res = await jwtVerify(token, key);
+  return res.payload as { sub?: string; email?: string };
 }
 
 export async function createSession(userId: number, meta?: { userAgent?: string; ip?: string }) {
@@ -99,4 +109,14 @@ export function setAuthCookies(res: Response, accessToken: string, refreshToken:
     path: "/",
     maxAge: refreshMaxAge
   });
+}
+
+export async function getUserIdFromRequest(req: Request) {
+  const token = req.headers.get("cookie")?.split(";").find((c) => c.trim().startsWith("auth_token="));
+  const tokenValue = token ? decodeURIComponent(token.split("=")[1]) : undefined;
+  if (!tokenValue) return null;
+  const payload = await verifyAccessToken(tokenValue).catch(() => null);
+  if (!payload?.sub) return null;
+  const id = Number(payload.sub);
+  return Number.isFinite(id) ? id : null;
 }
