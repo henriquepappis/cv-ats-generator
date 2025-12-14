@@ -10,7 +10,7 @@ services:
       - db
     labels:
       - traefik.enable=true
-      - traefik.http.routers.cvats.rule=Host(⁠ cv.henriquepappis.com ⁠)
+      - traefik.http.routers.cvats.rule=Host('cv.henriquepappis.com')
       - traefik.http.routers.cvats.entrypoints=websecure
       - traefik.http.routers.cvats.tls=true
       - traefik.http.routers.cvats.tls.certresolver=le

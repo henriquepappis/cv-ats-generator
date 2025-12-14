@@ -1,54 +1,54 @@
 # cv-ats-generator
 
-Monolito modular em Node.js + TypeScript para gerar currículos ATS-friendly com ingestão de arquivos e uso de LLM.
+Aplicação Next.js (App Router) para gerar currículos ATS-friendly a partir de JSON, baixar/abrir PDF e gerenciar currículos salvos por usuário.
 
-## Stack inicial
-- Next.js (App Router) para frontend + rotas API.
-- Tipagem compartilhada em `src/modules`.
-- Zod para validação/normalização de dados.
+## Stack
+- Next.js + TypeScript (rotas API e UI client-side).
+- Prisma + Postgres para usuários, sessões e currículos (templates).
+- Zod para validação de payloads.
+- JWT (access/refresh) com rotação de refresh em `Session`.
+
+## Funcionalidades
+- Edição de JSON do currículo com preview em PDF, download e abertura em nova aba.
+- Persistência de currículos: listar, salvar, carregar, baixar PDF e exclusão (soft delete).
+- Autenticação via cookies (`auth_token` + `refresh_token`) com middleware protegendo rotas.
+
+## Como rodar localmente
+1. Instale dependências: `npm install`.
+2. Copie o `.env.example` para `.env` e ajuste, em especial:
+   - `DATABASE_URL=postgresql://cvats:cvats@db:5432/cv_ats`
+   - `AUTH_SECRET` (defina um segredo forte).
+3. Suba o Postgres (ex.: `docker compose up -d db` ou `docker-compose -f docker-compose.prod.yml up -d db`).
+4. Rode migrações e geração de cliente:  
+   `npx prisma migrate dev --name init_auth_templates && npx prisma generate`
+5. Inicie: `npm run dev` (ou `npm run build && npm run start` em produção).
 
 ## Scripts
-- `npm run dev` — modo desenvolvimento.
+- `npm run dev` — desenvolvimento.
 - `npm run build` — build de produção.
-- `npm run start` — inicia build gerado.
+- `npm run start` — serve o build.
 - `npm run lint` — ESLint.
 - `npm run typecheck` — checagem de tipos.
 
 ## Estrutura
-- `src/app` — páginas e rotas API do Next.
+- `src/app` — páginas e rotas API (ex.: `/api/render`, `/api/resumes`).
 - `src/modules` — domínios desacoplados (resume, storage, openai).
-  - `resume` — tipos, ingestão e normalização.
-  - `storage` — abstrações para blobs/arquivos.
-  - `openai` — cliente/serviço de LLM.
-- `public` — assets estáticos (vazio por enquanto).
-- `prisma` — schema do banco para usuários e templates.
+- `prisma` — schema do banco e migrations.
+- `public` — assets estáticos.
 
-## Fluxo atual (JSON -> template)
-- O sistema aceita somente JSON no formato esperado e renderiza em um template HTML ATS-friendly.
-- Rota `POST /api/render`: corpo `{ "resume": <json> }` validado via Zod (`ResumeSchema`); retorna `{ "html": "<...>" }`.
-- Rota `POST /api/render/pdf`: corpo `{ "resume": <json> }`; retorna um PDF gerado via pdfkit no template base.
-- Upload de arquivos e LLM foram desconsiderados neste fluxo.
+## APIs relevantes
+- `POST /api/render` — recebe `{ resume }`, valida e devolve HTML.
+- `POST /api/render/pdf` — recebe `{ resume }`, retorna PDF.
+- `GET/POST /api/resumes` — lista e cria currículos do usuário autenticado.
+- `DELETE /api/resumes/[id]` — soft delete de currículo do usuário.
+- Autenticação: `/api/auth/login`, `/api/auth/signup`, `/api/auth/logout`, `/api/auth/refresh`.
 
-## Próximos passos sugeridos
-- Instalar dependências: `npm install` (ou `pnpm i`/`yarn`).
-- Persistir versões do JSON e HTML em um banco (ex.: Postgres + Prisma).
-- Adicionar geração de PDF a partir do HTML (Playwright).
-- Criar mais templates e selecionar por parâmetro.
+## Modelos (Prisma)
+- `User`: `id`, `email` (único), `password`, timestamps.
+- `Template`: `id`, `name`, `company?`, `content` (JSON), timestamps, `deletedAt?`, `userId`.
+- `Session`: `id`, `userId`, `tokenHash`, `expiresAt`, `revokedAt?`, `userAgent?`, `ip?`.
 
-## Banco e migrações (Prisma + Postgres)
-- URL default: `DATABASE_URL=postgresql://cvats:cvats@db:5432/cv_ats` (veja `.env.example`).
-- Modelos:
-  - `User`: `id`, `email` (único), `password`, timestamps.
-  - `Template`: `id`, `name`, `company?`, `content` (JSON), `createdAt`, `updatedAt`, `deletedAt?`, `userId` (FK).
-  - `Session`: `id`, `userId`, `tokenHash`, `expiresAt`, `createdAt`, `revokedAt?`, `userAgent?`, `ip?`.
-- Comandos:
-  - `npx prisma migrate dev --name init_auth_templates` (ou `--create-only` se não quiser aplicar).
-  - `npx prisma generate`.
-- Docker Compose inclui Postgres (`db`) e app (`app`).
-
-## Autenticação (mock)
-- Páginas: `/login`, `/signup` (cookies `auth_token` + `refresh_token` são definidos ao logar/cadastrar).
-- APIs: `/api/auth/login`, `/api/auth/signup`, `/api/auth/logout`, `/api/auth/refresh`.
-- Middleware redireciona para `/login` se não houver `auth_token` válido; para APIs retorna 401 (rota de refresh é pública para renovação).
-- JWT de acesso: 15 minutos (`auth_token`), Refresh token: 30 dias (`refresh_token`, armazenado hasheado em `Session`).
-- Para produção, configure `AUTH_SECRET` e aplique as migrações (`Session` inclui refresh tokens com rotação).
+## Produção
+- Configure `AUTH_SECRET` e variáveis de banco.
+- Use o `docker-compose.prod.yml` ou seu próprio manifest com a imagem gerada.
+- Execute migrações antes do start e mantenha os cookies `httpOnly` ativados.
