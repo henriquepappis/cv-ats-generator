@@ -64,10 +64,6 @@ export default function SignupPage() {
         </form>
 
         {error && <div className="alert">{error}</div>}
-
-        <p className="hint">
-          Exemplo: fluxo mock; implemente validação real com Prisma/DB para produção.
-        </p>
       </div>
 
       <style jsx>{`
