@@ -10,11 +10,20 @@ services:
       - db
     labels:
       - traefik.enable=true
-      - traefik.http.routers.cvats.rule=Host('cv.henriquepappis.com')
+      - traefik.docker.network=proxy
+
+      # HTTPS
+      - traefik.http.routers.cvats.rule=Host(`cv.henriquepappis.com`)
       - traefik.http.routers.cvats.entrypoints=websecure
       - traefik.http.routers.cvats.tls=true
       - traefik.http.routers.cvats.tls.certresolver=le
       - traefik.http.services.cvats.loadbalancer.server.port=3000
+
+      # HTTP -> HTTPS (recomendado)
+      - traefik.http.routers.cvats-http.rule=Host(`cv.henriquepappis.com`)
+      - traefik.http.routers.cvats-http.entrypoints=web
+      - traefik.http.routers.cvats-http.middlewares=cvats-redirect
+      - traefik.http.middlewares.cvats-redirect.redirectscheme.scheme=https
 
 networks:
   proxy:
