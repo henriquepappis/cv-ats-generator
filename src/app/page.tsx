@@ -12,39 +12,125 @@ type ResumeItem = {
 
 const SAMPLE_JSON = `{
   "name": "Henrique Pappis",
-  "title": "Senior PHP/Laravel Engineer | Tech Lead | Full Stack Developer",
+  "title": "Senior PHP Developer / Tech Lead",
   "location": "Recife, Brazil",
   "email": "contact@henriquepappis.com",
   "phone": "+55 81 98660-0535",
-  "linkedin": "linkedin.com/in/henriquepappis",
-  "summary": "Senior PHP/Laravel Engineer with 17+ years of continuous experience building scalable web applications, APIs, and distributed systems. Strong expertise in Laravel, microservices, system modernization, cloud environments, and Agile leadership. Proven history of improving system performance, reducing technical debt, and leading engineering teams to deliver high-quality software. Seeking international opportunities to contribute as a Senior Backend or Full-Stack Engineer.",
+  "linkedin": "https://www.linkedin.com/in/henriquepappis",
+  "summary": "Senior PHP Developer with 18+ years of experience in web application development, specializing in PHP ecosystems (Laravel, Symfony, legacy PHP) and backend architecture. Proven background in system modernization, API design, performance optimization, and leading technical initiatives. Former Tech Lead with hands-on experience guiding teams through architectural refactors, migrations from monoliths to distributed systems, and adoption of best engineering practices. Strong focus on code quality, scalability, security, and business-oriented solutions.",
   "skills": {
-    "languages": ["PHP", "JavaScript", "TypeScript"],
-    "frameworks": ["Laravel", "Symfony", "CodeIgniter", "Lumen", "Vue.js", "React"],
-    "backend": ["REST APIs", "Microservices", "Authentication (JWT, OAuth, Sanctum)", "Queues", "RabbitMQ"],
-    "databases": ["MySQL", "PostgreSQL", "MongoDB", "Query Optimization"],
-    "devops": ["Docker", "Linux Servers", "Nginx", "Apache", "AWS", "Google Cloud", "Azure"],
-    "tools": ["Git", "Git Flow", "Pull Requests", "Code Review", "Jira", "Confluence"],
-    "principles": ["SOLID", "Clean Code", "Design Patterns", "TDD"],
-    "other": ["Agile/Scrum", "Remote Collaboration", "CI/CD", "Swagger/OpenAPI"]
+    "Backend Development": [
+      "PHP 8+",
+      "Laravel",
+      "Symfony",
+      "Lumen",
+      "WinterCMS",
+      "RESTful APIs",
+      "API Design",
+      "Authentication & Authorization (Sanctum, JWT)"
+    ],
+    "Architecture & Engineering": [
+      "Monolithic to Distributed Systems Migration",
+      "Microservices Concepts",
+      "Clean Architecture",
+      "SOLID Principles",
+      "Design Patterns",
+      "Performance Optimization",
+      "Scalability"
+    ],
+    "Databases & Messaging": [
+      "MySQL",
+      "PostgreSQL",
+      "MongoDB",
+      "Database Modeling",
+      "Query Optimization",
+      "RabbitMQ"
+    ],
+    "DevOps & Tooling": [
+      "Git",
+      "Git Flow",
+      "Code Review",
+      "Linux Servers",
+      "CI/CD Concepts",
+      "Docker (working knowledge)"
+    ],
+    "Frontend & Integration": [
+      "Vue.js (integration experience)",
+      "API-first Development",
+      "Swagger / OpenAPI"
+    ],
+    "Leadership & Process": [
+      "Technical Leadership",
+      "Mentoring Developers",
+      "Agile Methodologies",
+      "Stakeholder Communication",
+      "Technical Documentation"
+    ]
   },
   "experience": [
     {
       "position": "Tech Lead",
-      "company": "ZoneSoft (Portugal)",
+      "company": "ZoneSoft",
       "location": "Remote",
-      "period": "Mar 2023 – May 2025",
+      "period": "Mar 2023 – Jun 2025",
       "achievements": [
-        "Architected and executed the decomposition of a monolithic platform into independent API, Frontend, and Backoffice services, improving scalability and deployment autonomy.",
-        "Implemented Git Flow, PR standards, and Code Review culture, reducing production bugs and increasing delivery consistency.",
-        "Modernized legacy PHP applications by upgrading frameworks, reducing technical debt and improving maintainability.",
-        "Collaborated closely with Product and Business teams to define roadmaps and strategic technical initiatives.",
-        "Mentored developers and enhanced engineering practices, fostering a high-performance team environment."
+        "Led the technical evolution of a large-scale event and cashless system used in high-volume events.",
+        "Coordinated backend and frontend developers, defining architecture, standards, and best practices.",
+        "Participated in the migration from a monolithic system to a distributed architecture with separate API, backoffice, frontend, and websocket services.",
+        "Improved system reliability and scalability to support events with up to 150,000 active users.",
+        "Acted as a technical reference point for stakeholders and product management."
+      ]
+    },
+    {
+      "position": "Senior PHP Developer",
+      "company": "ACP – Secretariat of Finance",
+      "location": "Brazil",
+      "period": "Feb 2022 – Feb 2023",
+      "achievements": [
+        "Led the migration of a critical legacy system from PHP 5.2 to a modern proprietary platform.",
+        "Refactored core business logic to improve maintainability, performance, and security.",
+        "Worked closely with public-sector stakeholders to ensure continuity of essential financial services."
+      ]
+    },
+    {
+      "position": "PHP Developer",
+      "company": "Arquivei",
+      "location": "Remote",
+      "period": "Apr 2021 – Dec 2021",
+      "achievements": [
+        "Contributed to the user engagement team, developing features to increase platform adoption.",
+        "Implemented improvements that enhanced usability and encouraged usage of new functionalities.",
+        "Worked in a fast-paced, product-driven environment with a strong focus on end-user value."
+      ]
+    },
+    {
+      "position": "PHP Developer",
+      "company": "Incoders (Guarida Imóveis Project)",
+      "location": "Brazil",
+      "period": "Apr 2020 – Apr 2021",
+      "achievements": [
+        "Developed a new financial system for a large real estate company.",
+        "Modernized authentication mechanisms and improved overall system security.",
+        "Automated financial and payment-related processes using RabbitMQ for asynchronous processing."
       ]
     }
   ],
   "education": [
-    { "degree": "MBA in Agile Methodologies", "institution": "FM2S Educação", "completion": "Dec 2025" }
+    {
+      "degree": "Bachelor's Degree in Information Systems",
+      "institution": "Universidade",
+      "completion": "2011"
+    },
+    {
+      "degree": "Postgraduate Degree in Software Engineering",
+      "institution": "Graduate Program",
+      "completion": "Completed"
+    },
+    {
+      "degree": "MBA in Agile Methodologies",
+      "institution": "FM2S",
+      "completion": "In Progress"
+    }
   ]
 }`;
 
@@ -370,7 +456,7 @@ export default function Home() {
           </button>
 
           <button
-            onClick={handlePreview}
+            onClick={() => handlePreview()}
             disabled={previewLoading}
             style={{
               padding: "12px 16px",
