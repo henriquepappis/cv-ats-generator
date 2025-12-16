@@ -77,6 +77,31 @@ export function renderResumeHtml(resume: ResumeInput): string {
         .join("")
     : "";
 
+  const projects =
+    resume.projects?.length
+      ? resume.projects
+          .map((project) => {
+            const links = [project.url ? `<a href="${project.url}">Live</a>` : null, project.github ? `<a href="${project.github}">GitHub</a>` : null]
+              .filter(Boolean)
+              .join(" · ");
+            const technologies = project.technologies?.length
+              ? `<ul class="chips">${project.technologies.map((t) => `<li>${t}</li>`).join("")}</ul>`
+              : "";
+
+            return `
+        <div class="item">
+          <div class="item-header">
+            <strong>${project.name ?? ""}</strong>
+            <span>${links}</span>
+          </div>
+          ${project.description ? `<p class="block">${project.description}</p>` : ""}
+          ${technologies}
+        </div>
+      `;
+          })
+          .join("")
+      : "";
+
   return `
   <!doctype html>
   <html lang="pt-BR">
@@ -185,6 +210,7 @@ export function renderResumeHtml(resume: ResumeInput): string {
 
         ${section("Resumo", summary || null)}
         ${section("Experiência", experiences || null)}
+        ${section("Projetos", projects || null)}
         ${section("Educação", education || null)}
         ${section("Skills", skillsBlocks || null)}
       </div>

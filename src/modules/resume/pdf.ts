@@ -62,6 +62,29 @@ export async function renderResumePdf(resume: ResumeInput): Promise<Buffer> {
     doc.moveDown(0.9);
   }
 
+  // Projects
+  const projects = resume.projects ?? [];
+  if (projects.length) {
+    sectionTitle(doc, "PROJECTS", sizing.title);
+    projects.forEach((project, idx) => {
+      doc.font("Helvetica-Bold").fontSize(sizing.body).text(project.name ?? "", { width: textWidth });
+      const links = [project.url, project.github].filter(Boolean).join(" | ");
+      if (links) {
+        doc.font("Helvetica").fontSize(sizing.body).text(links, { width: textWidth });
+      }
+      if (project.description) {
+        doc.font("Helvetica").fontSize(sizing.body).text(project.description, { width: textWidth, lineGap: 1.1 });
+      }
+      if (project.technologies?.length) {
+        doc.font("Helvetica").fontSize(sizing.body).text(`Tech: ${project.technologies.join(", ")}`, { width: textWidth });
+      }
+      if (idx < projects.length - 1) {
+        doc.moveDown(0.6);
+      }
+    });
+    doc.moveDown(0.9);
+  }
+
   // Education
   if (resume.education?.length) {
     sectionTitle(doc, "EDUCATION", sizing.title);
@@ -188,6 +211,29 @@ function estimateHeight(resume: ResumeInput, sizing: { header: number; subHeader
       }
       if (idx < experiences.length - 1) {
         h += gap(0.7, sizing.body);
+      }
+    });
+    h += gap(0.9, sizing.body);
+  }
+
+  // Projects
+  const projects = resume.projects ?? [];
+  if (projects.length) {
+    h += lineHeightBold("PROJECTS", sizing.title);
+    projects.forEach((project, idx) => {
+      h += lineHeightBold(project.name, sizing.body);
+      const links = [project.url, project.github].filter(Boolean).join(" | ");
+      if (links) {
+        h += lineHeight(links, sizing.body);
+      }
+      if (project.description) {
+        h += lineHeight(project.description, sizing.body, 1.1);
+      }
+      if (project.technologies?.length) {
+        h += lineHeight(`Tech: ${project.technologies.join(", ")}`, sizing.body);
+      }
+      if (idx < projects.length - 1) {
+        h += gap(0.6, sizing.body);
       }
     });
     h += gap(0.9, sizing.body);

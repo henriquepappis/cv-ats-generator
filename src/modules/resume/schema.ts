@@ -8,17 +8,17 @@ export const ResumeSchema = z.object({
   phone: z.string().optional(),
   linkedin: z.string().optional(),
   summary: z.string().optional(),
-  skills: z
-    .object({
-      languages: z.array(z.string()).optional(),
-      frameworks: z.array(z.string()).optional(),
-      backend: z.array(z.string()).optional(),
-      databases: z.array(z.string()).optional(),
-      devops: z.array(z.string()).optional(),
-      tools: z.array(z.string()).optional(),
-      principles: z.array(z.string()).optional(),
-      other: z.array(z.string()).optional()
-    })
+  skills: z.record(z.array(z.string())).optional(),
+  projects: z
+    .array(
+      z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        github: z.string().url().optional(),
+        url: z.string().url().optional(),
+        technologies: z.array(z.string()).optional()
+      })
+    )
     .optional(),
   experience: z
     .array(

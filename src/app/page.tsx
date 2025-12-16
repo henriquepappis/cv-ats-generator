@@ -11,125 +11,44 @@ type ResumeItem = {
 };
 
 const SAMPLE_JSON = `{
-  "name": "Henrique Pappis",
-  "title": "Senior PHP Developer / Tech Lead",
-  "location": "Recife, Brazil",
-  "email": "contact@henriquepappis.com",
-  "phone": "+55 81 98660-0535",
-  "linkedin": "https://www.linkedin.com/in/henriquepappis",
-  "summary": "Senior PHP Developer with 18+ years of experience in web application development, specializing in PHP ecosystems (Laravel, Symfony, legacy PHP) and backend architecture. Proven background in system modernization, API design, performance optimization, and leading technical initiatives. Former Tech Lead with hands-on experience guiding teams through architectural refactors, migrations from monoliths to distributed systems, and adoption of best engineering practices. Strong focus on code quality, scalability, security, and business-oriented solutions.",
+  "name": "Seu Nome",
+  "title": "Seu cargo / foco",
+  "location": "Cidade, País",
+  "email": "email@example.com",
+  "phone": "+55 00 00000-0000",
+  "linkedin": "https://www.linkedin.com/in/seu-perfil",
+  "summary": "Resumo breve do perfil, foco técnico e principais entregas.",
   "skills": {
-    "Backend Development": [
-      "PHP 8+",
-      "Laravel",
-      "Symfony",
-      "Lumen",
-      "WinterCMS",
-      "RESTful APIs",
-      "API Design",
-      "Authentication & Authorization (Sanctum, JWT)"
-    ],
-    "Architecture & Engineering": [
-      "Monolithic to Distributed Systems Migration",
-      "Microservices Concepts",
-      "Clean Architecture",
-      "SOLID Principles",
-      "Design Patterns",
-      "Performance Optimization",
-      "Scalability"
-    ],
-    "Databases & Messaging": [
-      "MySQL",
-      "PostgreSQL",
-      "MongoDB",
-      "Database Modeling",
-      "Query Optimization",
-      "RabbitMQ"
-    ],
-    "DevOps & Tooling": [
-      "Git",
-      "Git Flow",
-      "Code Review",
-      "Linux Servers",
-      "CI/CD Concepts",
-      "Docker (working knowledge)"
-    ],
-    "Frontend & Integration": [
-      "Vue.js (integration experience)",
-      "API-first Development",
-      "Swagger / OpenAPI"
-    ],
-    "Leadership & Process": [
-      "Technical Leadership",
-      "Mentoring Developers",
-      "Agile Methodologies",
-      "Stakeholder Communication",
-      "Technical Documentation"
-    ]
+    "Backend": ["Tecnologia 1", "Tecnologia 2"],
+    "Frontend": ["Framework 1", "Framework 2"],
+    "DevOps": ["Ferramenta 1", "Ferramenta 2"]
   },
+  "projects": [
+    {
+      "name": "Projeto Exemplo",
+      "description": "Breve descrição do projeto e impacto.",
+      "github": "https://github.com/usuario/repositorio",
+      "url": "https://projeto-em-producao.com",
+      "technologies": ["Tech A", "Tech B"]
+    }
+  ],
   "experience": [
     {
-      "position": "Tech Lead",
-      "company": "ZoneSoft",
-      "location": "Remote",
-      "period": "Mar 2023 – Jun 2025",
+      "position": "Cargo",
+      "company": "Empresa",
+      "location": "Local",
+      "period": "Jan 2020 – Dez 2022",
       "achievements": [
-        "Led the technical evolution of a large-scale event and cashless system used in high-volume events.",
-        "Coordinated backend and frontend developers, defining architecture, standards, and best practices.",
-        "Participated in the migration from a monolithic system to a distributed architecture with separate API, backoffice, frontend, and websocket services.",
-        "Improved system reliability and scalability to support events with up to 150,000 active users.",
-        "Acted as a technical reference point for stakeholders and product management."
-      ]
-    },
-    {
-      "position": "Senior PHP Developer",
-      "company": "ACP – Secretariat of Finance",
-      "location": "Brazil",
-      "period": "Feb 2022 – Feb 2023",
-      "achievements": [
-        "Led the migration of a critical legacy system from PHP 5.2 to a modern proprietary platform.",
-        "Refactored core business logic to improve maintainability, performance, and security.",
-        "Worked closely with public-sector stakeholders to ensure continuity of essential financial services."
-      ]
-    },
-    {
-      "position": "PHP Developer",
-      "company": "Arquivei",
-      "location": "Remote",
-      "period": "Apr 2021 – Dec 2021",
-      "achievements": [
-        "Contributed to the user engagement team, developing features to increase platform adoption.",
-        "Implemented improvements that enhanced usability and encouraged usage of new functionalities.",
-        "Worked in a fast-paced, product-driven environment with a strong focus on end-user value."
-      ]
-    },
-    {
-      "position": "PHP Developer",
-      "company": "Incoders (Guarida Imóveis Project)",
-      "location": "Brazil",
-      "period": "Apr 2020 – Apr 2021",
-      "achievements": [
-        "Developed a new financial system for a large real estate company.",
-        "Modernized authentication mechanisms and improved overall system security.",
-        "Automated financial and payment-related processes using RabbitMQ for asynchronous processing."
+        "Responsabilidade ou resultado relevante 1",
+        "Responsabilidade ou resultado relevante 2"
       ]
     }
   ],
   "education": [
     {
-      "degree": "Bachelor's Degree in Information Systems",
-      "institution": "Universidade",
-      "completion": "2011"
-    },
-    {
-      "degree": "Postgraduate Degree in Software Engineering",
-      "institution": "Graduate Program",
-      "completion": "Completed"
-    },
-    {
-      "degree": "MBA in Agile Methodologies",
-      "institution": "FM2S",
-      "completion": "In Progress"
+      "degree": "Graduação ou Certificação",
+      "institution": "Instituição",
+      "completion": "Ano"
     }
   ]
 }`;
@@ -516,6 +435,7 @@ export default function Home() {
   linkedin?: string,
   summary?: string,
   skills?: { [categoria]: string[] },
+  projects?: [{ name: string, description?: string, github?: string, url?: string, technologies?: string[] }],
   experience?: [{ position?, company?, location?, period?, achievements?: string[] }],
   education?: [{ degree?, institution?, completion? }]
 }`}
