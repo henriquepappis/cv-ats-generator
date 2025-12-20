@@ -13,6 +13,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <script
+          defer
+          src="https://analytics.henriquepappis.com/script.js"
+          data-website-id="78be6406-0132-44fc-be79-4ab06081e567"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
